@@ -5,18 +5,17 @@ import java.io.*
 
 class Storage {
 
-    fun save(snap: Array<Snap>) {
-        val file = File("")
+    fun save(snap: Snap) {
+        val file = File("snap.sr")
         ObjectOutputStream(FileOutputStream(file)).use {
             it.writeObject(snap)
         }
     }
 
-    fun load(): Array<Snap> {
+    fun load(): Snap {
         val file = File("")
         ObjectInputStream(FileInputStream(file)).use {
-            @Suppress("UNCHECKED_CAST")
-            return it.readObject() as Array<Snap>
+            return it.readObject() as Snap
         }
     }
 

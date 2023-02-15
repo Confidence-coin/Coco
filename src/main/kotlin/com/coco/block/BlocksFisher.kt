@@ -1,7 +1,6 @@
 package com.coco.block
 
-import com.coco.api.ApiObject
-import com.coco.signature.Signatures
+import com.coco.snap.SnapBuilder
 import com.coco.snap.Snaps
 
 object BlocksFisher {
@@ -9,39 +8,36 @@ object BlocksFisher {
     /**
      * Starts fishing for new blocks in the NPFS sea
      */
-    fun start() {
-        TODO()
-    }
-
-    fun onNewBlock(block: BlockData) {
-        for (topic in block.topics) {
-            when(topic.topicId){
-                OPTING -> handleTransactions(topic)
-                UPDATE_TRANSACTION -> handleUpdateTransaction(topic)
-            }
+    fun goFishing() {
+        while (true) {
+            collectBlocks()
+            createASnap()
+            voteAndCreateABlock()
         }
     }
 
-    private fun handleUpdateTransaction(topic: Topic) {
+    @Suppress("UNREACHABLE_CODE")
+    private fun voteAndCreateABlock() {
+        val nextBlocks: Array<BlockData> = TODO()
+
+        val blockData: BlockData = BlockBuilder.build(nextBlocks)
+        publishBlock(blockData)
+    }
+
+    private fun publishBlock(blockData: BlockData) {
         TODO("Not yet implemented")
     }
 
-    private fun handleTransactions(topic: Topic) {
-        for (item in topic.items) {
-            val opting = item.toOpting()
-            val walletAddress = Snaps.balance(opting.walletId).walletAddress
+    @Suppress("UNREACHABLE_CODE")
+    private fun createASnap() {
+        val blocks: Array<BlockData> = TODO()
+        val nextBlocks: Array<BlockData> = TODO()
 
-            if(!verifySignature(opting.snapId, item.signature, walletAddress, item)){
-                continue
-            }
-        }
+        val snap = SnapBuilder.build(blocks, nextBlocks, Snaps.snap)
+        Snaps.updateSnap(snap)
     }
 
-    private fun verifySignature(
-        snapId: Int,
-        signature: String,
-        walletAddress: String,
-        item: ApiObject
-    ) = item.verifySignature(walletAddress) && // check for valid signature
-            Signatures.add(snapId, signature) // make sure it is not duplicated
+    private fun collectBlocks() {
+        TODO("It will send new blocks to onNewBlock")
+    }
 }

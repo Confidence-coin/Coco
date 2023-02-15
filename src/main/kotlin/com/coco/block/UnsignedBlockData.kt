@@ -1,7 +1,7 @@
 package com.coco.block
 
 @Suppress("ArrayInDataClass")
-data class BlockData(
+data class UnsignedBlockData(
     /**
      * The CID(Content identifier) of snap [blockId]-2
      */
@@ -24,18 +24,5 @@ data class BlockData(
     /**
      * Array of validators who scored Red
      */
-    val redScores: Array<Int>,
-
-    /**
-     * Validator signature of all the fields but the cId
-     */
-    val signature: String,
-
-    /**
-     * This block CID(Content identifier)
-     */
-    val cId: String,
-) : Comparable<BlockData> {
-    override fun compareTo(other: BlockData) = cId.compareTo(other.cId)
-
-}
+    val redScores: Array<Int>
+)
